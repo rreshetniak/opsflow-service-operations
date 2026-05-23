@@ -1,6 +1,22 @@
-# OpsFlow
+# OpsFlow — Service Operations Dashboard
 
 OpsFlow is a modern service operations dashboard built with React, Vite and Tailwind CSS.
+
+The project demonstrates a professional B2B SaaS-style frontend application for managing service orders, inventory, customers, reports and operational activity.
+
+## Features
+
+- Light and dark theme
+- Responsive sidebar navigation
+- Service operations dashboard
+- KPI cards
+- Searchable service orders table
+- Create service order modal
+- Inventory overview
+- Customers overview
+- Reports page
+- Activity feed
+- Modern B2B SaaS UI
 
 ## Tech Stack
 
@@ -10,19 +26,16 @@ OpsFlow is a modern service operations dashboard built with React, Vite and Tail
 - Framer Motion
 - Lucide React
 
-## Current Status
+## Pages
 
-Initial project setup. The application will include:
+- Dashboard
+- Service Orders
+- Inventory
+- Customers
+- Reports
+- Settings
 
-- Service operations dashboard
-- Light and dark theme
-- Service orders table
-- Inventory page
-- Customers page
-- Reports page
-- Create service order modal
-
-## Run locally
+## Run Locally
 
 ```bash
 npm install
