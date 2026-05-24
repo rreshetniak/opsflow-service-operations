@@ -45,118 +45,16 @@ import {
   navItems,
   } from "./data/mockData";
 
-// const initialOrders = [
-//   {
-//     id: "SO-1048",
-//     customer: "Acme Manufacturing",
-//     location: "Houston, TX",
-//     asset: "Hydraulic Press HP-420",
-//     status: "In Progress",
-//     priority: "Critical",
-//     owner: "Sarah Johnson",
-//     due: "May 24, 2026",
-//     dueHint: "Overdue",
-//     value: 12450,
-//   },
-//   {
-//     id: "SO-1047",
-//     customer: "Northwind Energy",
-//     location: "Dallas, TX",
-//     asset: "Conveyor Line CL-12",
-//     status: "Waiting Parts",
-//     priority: "High",
-//     owner: "James Patel",
-//     due: "May 26, 2026",
-//     dueHint: "2 days left",
-//     value: 8760,
-//   },
-//   {
-//     id: "SO-1046",
-//     customer: "Stellar Industries",
-//     location: "Austin, TX",
-//     asset: "Cooling Unit CU-88",
-//     status: "Approval",
-//     priority: "Medium",
-//     owner: "Emily Davis",
-//     due: "May 29, 2026",
-//     dueHint: "5 days left",
-//     value: 5230,
-//   },
-//   {
-//     id: "SO-1045",
-//     customer: "Pinnacle Solutions",
-//     location: "San Antonio, TX",
-//     asset: "Robot Arm RA-7",
-//     status: "Assigned",
-//     priority: "Low",
-//     owner: "Michael Chen",
-//     due: "Jun 02, 2026",
-//     dueHint: "9 days left",
-//     value: 3120,
-//   },
-//   {
-//     id: "SO-1044",
-//     customer: "Global Tech Services",
-//     location: "Houston, TX",
-//     asset: "Packaging Line PL-4",
-//     status: "In Progress",
-//     priority: "High",
-//     owner: "Lisa Wong",
-//     due: "Jun 03, 2026",
-//     dueHint: "10 days left",
-//     value: 9870,
-//   },
-//   {
-//     id: "SO-1043",
-//     customer: "Bergmann Energy",
-//     location: "Berlin, DE",
-//     asset: "Cooling Unit CU-91",
-//     status: "Completed",
-//     priority: "Medium",
-//     owner: "Anna Weber",
-//     due: "Jun 05, 2026",
-//     dueHint: "Completed",
-//     value: 6460,
-//   },
-// ];
-
-// const inventory = [
-//   { sku: "MTR-4821", name: "Motor Assembly", stock: 24, reserved: 8, status: "Healthy" },
-//   { sku: "FLT-2210", name: "Filter Cartridge", stock: 11, reserved: 9, status: "Low Stock" },
-//   { sku: "BRG-9120", name: "Industrial Bearing", stock: 52, reserved: 13, status: "Healthy" },
-//   { sku: "SNS-3044", name: "Temperature Sensor", stock: 6, reserved: 5, status: "Critical" },
-// ];
-
-// const customers = [
-//   { name: "Acme Manufacturing", segment: "Manufacturing", openOrders: 12, sla: "92%", revenue: "€84,200" },
-//   { name: "Northwind Energy", segment: "Energy", openOrders: 7, sla: "96%", revenue: "€62,500" },
-//   { name: "Stellar Industries", segment: "Industrial", openOrders: 9, sla: "89%", revenue: "€48,900" },
-//   { name: "Bergmann Energy", segment: "Energy", openOrders: 4, sla: "98%", revenue: "€31,200" },
-// ];
-
-// const activities = [
-//   { type: "part", title: "Parts reserved for SO-1048", subtitle: "Motor Assembly #MTR-4821", time: "10:24 AM" },
-//   { type: "status", title: "SO-1047 status updated", subtitle: "Changed to Waiting Parts", time: "9:58 AM" },
-//   { type: "order", title: "New order created SO-1049", subtitle: "By James Patel", time: "9:41 AM" },
-//   { type: "risk", title: "SLA breach risk on SO-1046", subtitle: "Due in 2 days", time: "9:15 AM" },
-// ];
-
-// const navItems = [
-//   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-//   { id: "orders", label: "Service Orders", icon: ClipboardList },
-//   { id: "inventory", label: "Inventory", icon: Boxes },
-//   { id: "customers", label: "Customers", icon: Users },
-//   { id: "reports", label: "Reports", icon: BarChart3 },
-//   { id: "settings", label: "Settings", icon: Settings },
-// ];
+import { formatCurrency } from "./utils/format";
+//import { cn, statusStyles, priorityStyles } from "./utils/styles";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function formatCurrency(value) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
-}
+// function formatCurrency(value) {
+//   return new Intl.NumberFormat("en-US", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
+// }
 
 function statusStyles(status, darkMode) {
   const map = {
