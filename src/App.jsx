@@ -47,10 +47,11 @@ import {
 
 import { formatCurrency } from "./utils/format";
 import { cn, statusStyles, priorityStyles } from "./utils/styles";
+import Badge from "./components/ui/Badge";
 
-function Badge({ children, className }) {
-  return <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset", className)}>{children}</span>;
-}
+// function Badge({ children, className }) {
+//   return <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset", className)}>{children}</span>;
+// }
 
 function Logo({ darkMode }) {
   return (
