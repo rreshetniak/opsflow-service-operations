@@ -1,5 +1,7 @@
 # OpsFlow — Service Operations Dashboard
 
+# Live demo link: opsflow-service-operations.vercel.app
+
 OpsFlow is a modern service operations dashboard built with React, Vite and Tailwind CSS.
 
 The project demonstrates a professional B2B SaaS-style frontend application for managing service orders, inventory, customers, reports and operational activity.
