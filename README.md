@@ -43,6 +43,17 @@ The project demonstrates a professional B2B SaaS-style frontend application for 
 - Reports
 - Settings
 
+## Screenshots
+
+### Light Theme
+
+![OpsFlow Light Dashboard](public/screenshots/light-dashboard.png)
+
+### Dark Theme
+
+![OpsFlow Dark Dashboard](public/screenshots/dark-dashboard.png)
+
+
 ## Run Locally
 
 ```bash
