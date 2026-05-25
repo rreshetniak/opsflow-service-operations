@@ -132,11 +132,11 @@ export const activities = [
 ];
 
 export const navItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "orders", label: "Service Orders", icon: ClipboardList },
-  { id: "inventory", label: "Inventory", icon: Boxes },
-  { id: "customers", label: "Customers", icon: Users },
-  { id: "reports", label: "Reports", icon: BarChart3 },
-  { id: "settings", label: "Settings", icon: Settings },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { id: "orders", label: "Service Orders", icon: ClipboardList, path: "/orders" },
+  { id: "inventory", label: "Inventory", icon: Boxes, path: "/inventory" },
+  { id: "customers", label: "Customers", icon: Users, path: "/customers" },
+  { id: "reports", label: "Reports", icon: BarChart3, path: "/reports" },
+  { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
 ];
 
