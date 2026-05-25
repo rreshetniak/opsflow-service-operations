@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Sidebar from "./components/layout/Sidebar";
@@ -20,12 +20,18 @@ import { cn } from "./utils/styles";
 import { Navigate, Route, Routes } from "react-router";
 
 export default function OpsFlowApp() {
-  const [darkMode, setDarkMode] = useState(false);
-  //const [activePage, setActivePage] = useState("dashboard");
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("opsflow-theme");
+    return savedTheme === "dark";
+  });
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState(initialOrders);
   const [createOpen, setCreateOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("opsflow-theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
 
   const filteredOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -49,16 +55,6 @@ export default function OpsFlowApp() {
     setCreateOpen,
     setDarkMode,
   };
-
-  // const page = useMemo(() => {
-  //   const props = { darkMode, orders: filteredOrders, setCreateOpen, setDarkMode };
-  //   if (activePage === "orders") return <OrdersPage {...props} />;
-  //   if (activePage === "inventory") return <InventoryPage darkMode={darkMode} />;
-  //   if (activePage === "customers") return <CustomersPage darkMode={darkMode} />;
-  //   if (activePage === "reports") return <ReportsPage darkMode={darkMode} />;
-  //   if (activePage === "settings") return <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />;
-  //   return <DashboardPage {...props} />;
-  // }, [activePage, darkMode, filteredOrders]);
 
   return (
     <div
