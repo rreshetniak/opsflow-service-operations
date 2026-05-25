@@ -1,6 +1,6 @@
 import { cn } from "../../utils/styles";
 import { Menu } from "lucide-react";
-import { Search, Moon, Bell, ChevronDown } from "lucide-react";
+import { Search, Moon, Bell, ChevronDown, Sun } from "lucide-react";
 
 function Topbar({ darkMode, setDarkMode, search, setSearch, setSidebarOpen }) {
   return (
