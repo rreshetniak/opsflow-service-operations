@@ -36,6 +36,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
+import Card from "./components/ui/Card";
 
 import { 
   initialOrders,
@@ -48,10 +49,6 @@ import {
 import { formatCurrency } from "./utils/format";
 import { cn, statusStyles, priorityStyles } from "./utils/styles";
 import Badge from "./components/ui/Badge";
-
-// function Badge({ children, className }) {
-//   return <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset", className)}>{children}</span>;
-// }
 
 function Logo({ darkMode }) {
   return (
@@ -285,14 +282,6 @@ function BarChart({ darkMode }) {
         </div>
         <p className="text-sm font-semibold text-emerald-500">↑ 15% vs last week</p>
       </div>
-    </div>
-  );
-}
-
-function Card({ children, darkMode, className = "" }) {
-  return (
-    <div className={cn("rounded-3xl shadow-sm ring-1", darkMode ? "bg-white/[0.055] ring-white/10" : "bg-white ring-slate-200", className)}>
-      {children}
     </div>
   );
 }
