@@ -25,6 +25,7 @@ https://github.com/rreshetniak/opsflow-service-operations
 - Reports page
 - Activity feed
 - Modern B2B SaaS UI
+- Route-based navigation with React Router
 
 ## Tech Stack
 
@@ -33,15 +34,16 @@ https://github.com/rreshetniak/opsflow-service-operations
 - Tailwind CSS
 - Framer Motion
 - Lucide React
+- React Router
 
-## Pages
+## Routes
 
-- Dashboard
-- Service Orders
-- Inventory
-- Customers
-- Reports
-- Settings
+- `/` — Dashboard
+- `/orders` — Service Orders
+- `/inventory` — Inventory
+- `/customers` — Customers
+- `/reports` — Reports
+- `/settings` — Settings
 
 ## Screenshots
 
