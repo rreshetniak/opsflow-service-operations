@@ -1,17 +1,11 @@
 import { cn } from "../../utils/styles";
 import Logo from "./Logo";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { X, Sparkles, ArrowUpRight } from "lucide-react";
 import { navItems } from "../../data/mockData";
 import { NavLink } from "react-router";
 
-function Sidebar({
-  activePage,
-  setActivePage,
-  darkMode,
-  sidebarOpen,
-  setSidebarOpen,
-}) {
+function Sidebar({ darkMode, sidebarOpen, setSidebarOpen }) {
   return (
     <>
       <AnimatePresence>
@@ -51,7 +45,7 @@ function Sidebar({
         <nav className="mt-8 space-y-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const active = activePage === item.id;
+
             return (
               <NavLink
                 key={item.id}
