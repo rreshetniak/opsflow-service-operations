@@ -19,19 +19,38 @@ import { cn } from "./utils/styles";
 
 import { Navigate, Route, Routes } from "react-router";
 
+const ORDERS_STORAGE_KEY = "opsflow-orders";
+
 export default function OpsFlowApp() {
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("opsflow-theme");
     return savedTheme === "dark";
   });
   const [search, setSearch] = useState("");
-  const [orders, setOrders] = useState(initialOrders);
+  //const [orders, setOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState(() => {
+    const savedOrders = localStorage.getItem(ORDERS_STORAGE_KEY);
+
+    if (!savedOrders) {
+      return initialOrders;
+    }
+
+    try {
+      return JSON.parse(savedOrders);
+    } catch {
+      return initialOrders;
+    }
+  });
   const [createOpen, setCreateOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("opsflow-theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useEffect(() => {
+  localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
+}, [orders]);
 
   const filteredOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
