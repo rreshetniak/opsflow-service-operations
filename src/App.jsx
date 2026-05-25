@@ -17,9 +17,11 @@ import PageHeader from "./components/ui/PageHeader";
 import { initialOrders } from "./data/mockData";
 import { cn } from "./utils/styles";
 
+import { Navigate, Route, Routes } from "react-router";
+
 export default function OpsFlowApp() {
   const [darkMode, setDarkMode] = useState(false);
-  const [activePage, setActivePage] = useState("dashboard");
+  //const [activePage, setActivePage] = useState("dashboard");
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState(initialOrders);
   const [createOpen, setCreateOpen] = useState(false);
@@ -29,30 +31,94 @@ export default function OpsFlowApp() {
     const query = search.trim().toLowerCase();
     if (!query) return orders;
     return orders.filter((order) =>
-      [order.id, order.customer, order.asset, order.status, order.priority, order.owner, order.location].some((value) => String(value).toLowerCase().includes(query))
+      [
+        order.id,
+        order.customer,
+        order.asset,
+        order.status,
+        order.priority,
+        order.owner,
+        order.location,
+      ].some((value) => String(value).toLowerCase().includes(query)),
     );
   }, [orders, search]);
 
-  const page = useMemo(() => {
-    const props = { darkMode, orders: filteredOrders, setCreateOpen, setDarkMode };
-    if (activePage === "orders") return <OrdersPage {...props} />;
-    if (activePage === "inventory") return <InventoryPage darkMode={darkMode} />;
-    if (activePage === "customers") return <CustomersPage darkMode={darkMode} />;
-    if (activePage === "reports") return <ReportsPage darkMode={darkMode} />;
-    if (activePage === "settings") return <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />;
-    return <DashboardPage {...props} />;
-  }, [activePage, darkMode, filteredOrders]);
+  const pageProps = {
+    darkMode,
+    orders: filteredOrders,
+    setCreateOpen,
+    setDarkMode,
+  };
+
+  // const page = useMemo(() => {
+  //   const props = { darkMode, orders: filteredOrders, setCreateOpen, setDarkMode };
+  //   if (activePage === "orders") return <OrdersPage {...props} />;
+  //   if (activePage === "inventory") return <InventoryPage darkMode={darkMode} />;
+  //   if (activePage === "customers") return <CustomersPage darkMode={darkMode} />;
+  //   if (activePage === "reports") return <ReportsPage darkMode={darkMode} />;
+  //   if (activePage === "settings") return <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />;
+  //   return <DashboardPage {...props} />;
+  // }, [activePage, darkMode, filteredOrders]);
 
   return (
-    <div className={cn("min-h-screen", darkMode ? "bg-[#070b14] text-white" : "bg-slate-100 text-slate-950")}>
+    <div
+      className={cn(
+        "min-h-screen",
+        darkMode ? "bg-[#070b14] text-white" : "bg-slate-100 text-slate-950",
+      )}
+    >
       <div className="flex min-h-screen">
-        <Sidebar activePage={activePage} setActivePage={setActivePage} darkMode={darkMode} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Sidebar
+          darkMode={darkMode}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
         <div className="min-w-0 flex-1">
-          <Topbar darkMode={darkMode} setDarkMode={setDarkMode} search={search} setSearch={setSearch} setSidebarOpen={setSidebarOpen} />
+          <Topbar
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            search={search}
+            setSearch={setSearch}
+            setSidebarOpen={setSidebarOpen}
+          />
           <main className="p-4 lg:p-7">
             <AnimatePresence mode="wait">
-              <motion.div key={activePage + darkMode} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.22 }}>
-                {page}
+              <motion.div
+                key={darkMode ? "dark" : "light"}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.22 }}
+              >
+                <Routes>
+                  <Route path="/" element={<DashboardPage {...pageProps} />} />
+                  <Route
+                    path="/orders"
+                    element={<OrdersPage {...pageProps} />}
+                  />
+                  <Route
+                    path="/inventory"
+                    element={<InventoryPage darkMode={darkMode} />}
+                  />
+                  <Route
+                    path="/customers"
+                    element={<CustomersPage darkMode={darkMode} />}
+                  />
+                  <Route
+                    path="/reports"
+                    element={<ReportsPage darkMode={darkMode} />}
+                  />
+                  <Route
+                    path="/settings"
+                    element={
+                      <SettingsPage
+                        darkMode={darkMode}
+                        setDarkMode={setDarkMode}
+                      />
+                    }
+                  />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
               </motion.div>
             </AnimatePresence>
           </main>
