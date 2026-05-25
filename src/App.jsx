@@ -1,70 +1,21 @@
 import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Activity,
-  AlertTriangle,
-  ArrowUpRight,
-  BarChart3,
-  Bell,
-  Boxes,
-  Building2,
-  CalendarClock,
-  CheckCircle2,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ClipboardList,
-  Clock3,
-  Download,
-  Filter,
-  Gauge,
-  Home,
-  LayoutDashboard,
-  Menu,
-  Moon,
-  MoreHorizontal,
-  PackageCheck,
-  Plus,
-  Search,
-  Settings,
-  ShieldCheck,
-  SlidersHorizontal,
-  Sparkles,
-  Sun,
-  UserRound,
-  Users,
-  Wrench,
-  X,
-} from "lucide-react";
-import Card from "./components/ui/Card";
-import PageHeader from "./components/ui/PageHeader";
 
-import { 
-  initialOrders,
-  inventory,
-  customers,
-  activities,
-  navItems,
-  } from "./data/mockData";
-
-import { formatCurrency } from "./utils/format";
-import { cn, statusStyles, priorityStyles } from "./utils/styles";
-import Badge from "./components/ui/Badge";
-import Logo from "./components/layout/Logo";
 import Sidebar from "./components/layout/Sidebar";
 import Topbar from "./components/layout/Topbar";
-import Sparkline from "./components/dashboard/Sparkline";
-import MetricCard from "./components/dashboard/MetricCard";
-import BarChart from "./components/dashboard/BarChart";
-import ActivityFeed from "./components/dashboard/ActivityFeed";
-import OrdersTable from "./components/orders/OrdersTable";
 import CreateOrderModal from "./components/orders/CreateOrderModal";
+
 import DashboardPage from "./pages/DashboardPage";
 import OrdersPage from "./pages/OrdersPage";
 import InventoryPage from "./pages/InventoryPage";
 import CustomersPage from "./pages/CustomersPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
+
+import PageHeader from "./components/ui/PageHeader";
+
+import { initialOrders } from "./data/mockData";
+import { cn } from "./utils/styles";
 
 export default function OpsFlowApp() {
   const [darkMode, setDarkMode] = useState(false);
