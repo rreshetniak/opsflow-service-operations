@@ -16,7 +16,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus }) {
+function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus, onViewOrder }) {
   const totalValue = orders.reduce((sum, order) => sum + order.value, 0);
   const openOrders = orders.filter(
     (order) => order.status !== "Completed",
@@ -91,6 +91,7 @@ function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus }) {
           orders={orders.slice(0, 5)}
           darkMode={darkMode}
           onUpdateStatus={onUpdateStatus}
+          onViewOrder={onViewOrder}
         />
         <div className="space-y-6">
           <Card darkMode={darkMode} className="p-5">

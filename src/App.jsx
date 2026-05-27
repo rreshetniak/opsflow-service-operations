@@ -19,6 +19,8 @@ import { cn } from "./utils/styles";
 
 import { Navigate, Route, Routes } from "react-router";
 
+import OrderDetailsDrawer from "./components/orders/OrderDetailsDrawer";
+
 const ORDERS_STORAGE_KEY = "opsflow-orders";
 
 export default function OpsFlowApp() {
@@ -42,6 +44,7 @@ export default function OpsFlowApp() {
   });
   const [createOpen, setCreateOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("opsflow-theme", darkMode ? "dark" : "light");
@@ -67,6 +70,18 @@ export default function OpsFlowApp() {
     );
   }, [orders, search]);
 
+  const selectedOrder = useMemo(() => {
+    return orders.find((order) => order.id === selectedOrderId) || null;
+  }, [orders, selectedOrderId]);
+
+  function handleViewOrder(orderId) {
+    setSelectedOrderId(orderId);
+  }
+
+  function handleCloseOrderDetails() {
+    setSelectedOrderId(null);
+  }
+
   function handleUpdateOrderStatus(orderId, nextStatus) {
     setOrders((currentOrders) =>
       currentOrders.map((order) => {
@@ -89,6 +104,7 @@ export default function OpsFlowApp() {
     setCreateOpen,
     setDarkMode,
     onUpdateStatus: handleUpdateOrderStatus,
+    onViewOrder: handleViewOrder,
   };
 
   return (
@@ -160,6 +176,14 @@ export default function OpsFlowApp() {
         onClose={() => setCreateOpen(false)}
         onCreate={(order) => setOrders((current) => [order, ...current])}
         darkMode={darkMode}
+      />
+
+      <OrderDetailsDrawer
+        order={selectedOrder}
+        open={Boolean(selectedOrder)}
+        onClose={handleCloseOrderDetails}
+        darkMode={darkMode}
+        onUpdateStatus={handleUpdateOrderStatus}
       />
     </div>
   );

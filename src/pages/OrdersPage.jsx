@@ -3,7 +3,7 @@ import OrdersTable from "../components/orders/OrdersTable";
 import PageHeader from "../components/ui/PageHeader";
 import { Download, Plus } from "lucide-react";
 
-function OrdersPage({ darkMode, orders, setCreateOpen }) {
+function OrdersPage({ darkMode, orders, setCreateOpen, onViewOrder }) {
   return (
     <div>
       <PageHeader
@@ -31,7 +31,12 @@ function OrdersPage({ darkMode, orders, setCreateOpen }) {
           </div>
         }
       />
-      <OrdersTable orders={orders} darkMode={darkMode} compact />
+      <OrdersTable 
+        orders={orders} 
+        darkMode={darkMode} 
+        compact
+        onViewOrder={onViewOrder}
+      />
     </div>
   );
 }
