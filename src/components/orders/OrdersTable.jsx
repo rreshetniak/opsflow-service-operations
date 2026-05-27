@@ -21,6 +21,10 @@ function OrdersTable({
   onUpdateStatus,
   onViewOrder,
 }) {
+  const resultsLabel =
+    orders.length === 0
+      ? "No service orders found"
+      : `Showing 1 to ${orders.length} of ${orders.length} orders`;
   return (
     <Card darkMode={darkMode} className="overflow-hidden">
       <div
@@ -250,7 +254,7 @@ function OrdersTable({
             darkMode ? "text-slate-400" : "text-slate-500",
           )}
         >
-          Showing 1 to {orders.length} of {orders.length} orders
+          {resultsLabel}
         </p>
         <div className="flex items-center gap-2">
           <button
