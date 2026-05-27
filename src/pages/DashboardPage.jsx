@@ -15,8 +15,15 @@ import {
   ShieldCheck,
   ChevronDown,
 } from "lucide-react";
+import { Link } from "react-router";
 
-function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus, onViewOrder }) {
+function DashboardPage({
+  darkMode,
+  orders,
+  setCreateOpen,
+  onUpdateStatus,
+  onViewOrder,
+}) {
   const totalValue = orders.reduce((sum, order) => sum + order.value, 0);
   const openOrders = orders.filter(
     (order) => order.status !== "Completed",
@@ -30,7 +37,8 @@ function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus, onView
         subtitle="Overview of work orders, approvals, material usage, and SLA risks across your service organization."
         actions={
           <div className="flex gap-2">
-            <button
+            <Link
+              to="/orders"
               className={cn(
                 "inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold ring-1",
                 darkMode
@@ -39,7 +47,8 @@ function DashboardPage({ darkMode, orders, setCreateOpen, onUpdateStatus, onView
               )}
             >
               <Filter size={17} /> Filter
-            </button>
+            </Link>
+
             <button
               onClick={() => setCreateOpen(true)}
               className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-900/20 hover:from-indigo-500 hover:to-violet-500"
