@@ -27,7 +27,6 @@ export default function OpsFlowApp() {
     return savedTheme === "dark";
   });
   const [search, setSearch] = useState("");
-  //const [orders, setOrders] = useState(initialOrders);
   const [orders, setOrders] = useState(() => {
     const savedOrders = localStorage.getItem(ORDERS_STORAGE_KEY);
 
@@ -49,8 +48,8 @@ export default function OpsFlowApp() {
   }, [darkMode]);
 
   useEffect(() => {
-  localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
-}, [orders]);
+    localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
+  }, [orders]);
 
   const filteredOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -68,11 +67,28 @@ export default function OpsFlowApp() {
     );
   }, [orders, search]);
 
+  function handleUpdateOrderStatus(orderId, nextStatus) {
+    setOrders((currentOrders) =>
+      currentOrders.map((order) => {
+        if (order.id !== orderId) {
+          return order;
+        }
+
+        return {
+          ...order,
+          status: nextStatus,
+          dueHint: nextStatus === "Completed" ? "Completed" : order.dueHint,
+        };
+      }),
+    );
+  }
+
   const pageProps = {
     darkMode,
     orders: filteredOrders,
     setCreateOpen,
     setDarkMode,
+    onUpdateStatus: handleUpdateOrderStatus,
   };
 
   return (
