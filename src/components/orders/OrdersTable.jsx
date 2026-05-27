@@ -14,7 +14,13 @@ const STATUS_OPTIONS = [
   "Completed",
 ];
 
-function OrdersTable({ orders, darkMode, compact = false, onUpdateStatus }) {
+function OrdersTable({
+  orders,
+  darkMode,
+  compact = false,
+  onUpdateStatus,
+  onViewOrder,
+}) {
   return (
     <Card darkMode={darkMode} className="overflow-hidden">
       <div
@@ -93,7 +99,13 @@ function OrdersTable({ orders, darkMode, compact = false, onUpdateStatus }) {
                     compact ? "py-3" : "py-4",
                   )}
                 >
-                  {order.id}
+                  <button
+                    type="button"
+                    onClick={() => onViewOrder?.(order.id)}
+                    className="font-bold text-indigo-500 transition hover:text-indigo-400 hover:underline"
+                  >
+                    {order.id}
+                  </button>
                 </td>
                 <td className={cn("px-5", compact ? "py-3" : "py-4")}>
                   <div className="flex items-center gap-3">
