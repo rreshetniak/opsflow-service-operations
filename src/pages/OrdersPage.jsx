@@ -59,6 +59,7 @@ function OrdersPage({
   setCreateOpen,
   onUpdateStatus,
   onViewOrder,
+  onDeleteOrder,
 }) {
   const [statusFilter, setStatusFilter] = useState("All");
   const [priorityFilter, setPriorityFilter] = useState("All");
@@ -114,7 +115,7 @@ function OrdersPage({
                 "inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold ring-1 transition disabled:cursor-not-allowed disabled:opacity-50",
                 darkMode
                   ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
               )}
             >
               <Download size={17} /> Export CSV
@@ -133,7 +134,9 @@ function OrdersPage({
       <div
         className={cn(
           "mb-6 rounded-3xl p-5 shadow-sm ring-1",
-          darkMode ? "bg-white/[0.055] ring-white/10" : "bg-white ring-slate-200"
+          darkMode
+            ? "bg-white/[0.055] ring-white/10"
+            : "bg-white ring-slate-200",
         )}
       >
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -146,7 +149,7 @@ function OrdersPage({
               <h2
                 className={cn(
                   "font-bold",
-                  darkMode ? "text-white" : "text-slate-950"
+                  darkMode ? "text-white" : "text-slate-950",
                 )}
               >
                 Order filters
@@ -156,7 +159,7 @@ function OrdersPage({
             <p
               className={cn(
                 "mt-1 text-sm",
-                darkMode ? "text-slate-400" : "text-slate-500"
+                darkMode ? "text-slate-400" : "text-slate-500",
               )}
             >
               Showing {filteredOrders.length} of {orders.length} service orders.
@@ -168,7 +171,7 @@ function OrdersPage({
               <span
                 className={cn(
                   "text-xs font-bold uppercase tracking-wide",
-                  darkMode ? "text-slate-500" : "text-slate-400"
+                  darkMode ? "text-slate-500" : "text-slate-400",
                 )}
               >
                 Status
@@ -181,7 +184,7 @@ function OrdersPage({
                   "mt-2 h-11 w-full rounded-2xl px-3 text-sm font-semibold outline-none ring-1 transition",
                   darkMode
                     ? "bg-[#111827] text-white ring-white/10 focus:ring-indigo-400/50"
-                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30"
+                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30",
                 )}
               >
                 {STATUS_FILTERS.map((status) => (
@@ -194,7 +197,7 @@ function OrdersPage({
               <span
                 className={cn(
                   "text-xs font-bold uppercase tracking-wide",
-                  darkMode ? "text-slate-500" : "text-slate-400"
+                  darkMode ? "text-slate-500" : "text-slate-400",
                 )}
               >
                 Priority
@@ -207,7 +210,7 @@ function OrdersPage({
                   "mt-2 h-11 w-full rounded-2xl px-3 text-sm font-semibold outline-none ring-1 transition",
                   darkMode
                     ? "bg-[#111827] text-white ring-white/10 focus:ring-indigo-400/50"
-                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30"
+                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30",
                 )}
               >
                 {PRIORITY_FILTERS.map((priority) => (
@@ -223,7 +226,7 @@ function OrdersPage({
                 "mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold ring-1 transition disabled:cursor-not-allowed disabled:opacity-50 sm:mt-6",
                 darkMode
                   ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
               )}
             >
               <RotateCcw size={16} /> Reset
@@ -238,6 +241,8 @@ function OrdersPage({
         compact
         onUpdateStatus={onUpdateStatus}
         onViewOrder={onViewOrder}
+        showViewAll={false}
+        onDeleteOrder={onDeleteOrder}
       />
     </div>
   );

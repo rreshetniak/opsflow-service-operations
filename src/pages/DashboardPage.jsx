@@ -1,11 +1,9 @@
 import { cn } from "../utils/styles";
 import { formatCurrency } from "../utils/format";
 import PageHeader from "../components/ui/PageHeader";
-import Card from "../components/ui/Card";
 import MetricCard from "../components/dashboard/MetricCard";
 import ActivityFeed from "../components/dashboard/ActivityFeed";
 import OrdersTable from "../components/orders/OrdersTable";
-import BarChart from "../components/dashboard/BarChart";
 import {
   Filter,
   Plus,
@@ -16,6 +14,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Link } from "react-router";
+import WeeklyThroughputCard from "../components/dashboard/WeeklyThroughputCard";
 
 function DashboardPage({
   darkMode,
@@ -106,7 +105,7 @@ function DashboardPage({
           onDeleteOrder={onDeleteOrder}
         />
         <div className="space-y-6">
-          <Card darkMode={darkMode} className="p-5">
+          {/* <Card darkMode={darkMode} className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <h3
@@ -138,7 +137,8 @@ function DashboardPage({
               </button>
             </div>
             <BarChart darkMode={darkMode} />
-          </Card>
+          </Card> */}
+          <WeeklyThroughputCard darkMode={darkMode} />
           <ActivityFeed darkMode={darkMode} onViewAll={onViewActivity} />
         </div>
       </div>
