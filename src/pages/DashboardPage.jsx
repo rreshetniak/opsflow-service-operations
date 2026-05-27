@@ -23,6 +23,8 @@ function DashboardPage({
   setCreateOpen,
   onUpdateStatus,
   onViewOrder,
+  onDeleteOrder,
+  onViewActivity,
 }) {
   const totalValue = orders.reduce((sum, order) => sum + order.value, 0);
   const openOrders = orders.filter(
@@ -101,6 +103,7 @@ function DashboardPage({
           darkMode={darkMode}
           onUpdateStatus={onUpdateStatus}
           onViewOrder={onViewOrder}
+          onDeleteOrder={onDeleteOrder}
         />
         <div className="space-y-6">
           <Card darkMode={darkMode} className="p-5">
@@ -136,7 +139,7 @@ function DashboardPage({
             </div>
             <BarChart darkMode={darkMode} />
           </Card>
-          <ActivityFeed darkMode={darkMode} />
+          <ActivityFeed darkMode={darkMode} onViewAll={onViewActivity} />
         </div>
       </div>
     </div>

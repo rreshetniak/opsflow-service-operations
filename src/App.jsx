@@ -20,6 +20,7 @@ import { cn } from "./utils/styles";
 import { Navigate, Route, Routes } from "react-router";
 
 import OrderDetailsDrawer from "./components/orders/OrderDetailsDrawer";
+import ActivityDrawer from "./components/dashboard/ActivityDrawer";
 
 const ORDERS_STORAGE_KEY = "opsflow-orders";
 
@@ -45,6 +46,7 @@ export default function OpsFlowApp() {
   const [createOpen, setCreateOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [activityDrawerOpen, setActivityDrawerOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("opsflow-theme", darkMode ? "dark" : "light");
@@ -98,6 +100,24 @@ export default function OpsFlowApp() {
     );
   }
 
+  function handleDeleteOrder(orderId) {
+    setOrders((currentOrders) =>
+      currentOrders.filter((order) => order.id !== orderId),
+    );
+
+    if (selectedOrderId === orderId) {
+      setSelectedOrderId(null);
+    }
+  }
+
+  function handleOpenActivityDrawer() {
+    setActivityDrawerOpen(true);
+  }
+
+  function handleCloseActivityDrawer() {
+    setActivityDrawerOpen(false);
+  }
+
   const pageProps = {
     darkMode,
     orders: filteredOrders,
@@ -105,6 +125,8 @@ export default function OpsFlowApp() {
     setDarkMode,
     onUpdateStatus: handleUpdateOrderStatus,
     onViewOrder: handleViewOrder,
+    onDeleteOrder: handleDeleteOrder,
+    onViewActivity: handleOpenActivityDrawer,
   };
 
   return (
@@ -184,6 +206,12 @@ export default function OpsFlowApp() {
         onClose={handleCloseOrderDetails}
         darkMode={darkMode}
         onUpdateStatus={handleUpdateOrderStatus}
+      />
+
+      <ActivityDrawer
+        open={activityDrawerOpen}
+        onClose={handleCloseActivityDrawer}
+        darkMode={darkMode}
       />
     </div>
   );
