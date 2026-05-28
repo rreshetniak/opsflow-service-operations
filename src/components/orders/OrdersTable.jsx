@@ -42,6 +42,30 @@ function OrdersTable({
     setOpenActionsOrderId(null);
   }, [orders.length]);
 
+  useEffect(() => {
+    function handlePointerDown(event) {
+      const clickedInsideActions = event.target.closest("[data-order-actions]");
+
+      if (!clickedInsideActions) {
+        setOpenActionsOrderId(null);
+      }
+    }
+
+    function handleEscape(event) {
+      if (event.key === "Escape") {
+        setOpenActionsOrderId(null);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   const visibleOrders = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE;
     return orders.slice(start, start + PAGE_SIZE);
@@ -57,10 +81,12 @@ function OrdersTable({
 
   function goToPreviousPage() {
     setCurrentPage((page) => Math.max(1, page - 1));
+    setOpenActionsOrderId(null);
   }
 
   function goToNextPage() {
     setCurrentPage((page) => Math.min(totalPages, page + 1));
+    setOpenActionsOrderId(null);
   }
 
   function toggleRowActions(orderId) {
@@ -104,6 +130,7 @@ function OrdersTable({
           >
             Service Orders
           </h2>
+
           <p
             className={cn(
               "text-sm",
@@ -216,6 +243,7 @@ function OrdersTable({
                         >
                           {order.customer}
                         </p>
+
                         <p
                           className={cn(
                             "text-xs",
@@ -291,6 +319,7 @@ function OrdersTable({
                     >
                       {order.due}
                     </p>
+
                     <p
                       className={cn(
                         "text-xs",
@@ -316,7 +345,7 @@ function OrdersTable({
                   </td>
 
                   <td className="px-5 py-4 text-right">
-                    <div className="relative inline-flex">
+                    <div data-order-actions className="relative inline-flex">
                       <button
                         type="button"
                         onClick={() => toggleRowActions(order.id)}
@@ -396,6 +425,7 @@ function OrdersTable({
         {orders.length > 0 && (
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={goToPreviousPage}
               disabled={currentPage === 1}
               className={cn(
@@ -411,8 +441,12 @@ function OrdersTable({
             {Array.from({ length: totalPages }, (_, index) => index + 1).map(
               (page) => (
                 <button
+                  type="button"
                   key={page}
-                  onClick={() => setCurrentPage(page)}
+                  onClick={() => {
+                    setCurrentPage(page);
+                    setOpenActionsOrderId(null);
+                  }}
                   className={cn(
                     "h-9 w-9 rounded-xl text-sm font-bold ring-1 transition",
                     page === currentPage
@@ -428,6 +462,7 @@ function OrdersTable({
             )}
 
             <button
+              type="button"
               onClick={goToNextPage}
               disabled={currentPage === totalPages}
               className={cn(
