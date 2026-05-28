@@ -22,7 +22,7 @@ const STATUS_OPTIONS = [
   "Completed",
 ];
 
-const PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 5;
 
 function OrdersTable({
   orders,
@@ -32,12 +32,14 @@ function OrdersTable({
   onViewOrder,
   onDeleteOrder,
   showViewAll = true,
+  showPagination = true,
+  pageSize = DEFAULT_PAGE_SIZE,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [openActionsOrderId, setOpenActionsOrderId] = useState(null);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
 
-  const totalPages = Math.max(1, Math.ceil(orders.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(orders.length / pageSize));
 
   useEffect(() => {
     setCurrentPage(1);
@@ -70,17 +72,25 @@ function OrdersTable({
   }, []);
 
   const visibleOrders = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    return orders.slice(start, start + PAGE_SIZE);
-  }, [orders, currentPage]);
+    if (!showPagination) {
+      return orders.slice(0, pageSize);
+    }
 
-  const startItem = orders.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
-  const endItem = Math.min(currentPage * PAGE_SIZE, orders.length);
+    const start = (currentPage - 1) * pageSize;
+    return orders.slice(start, start + pageSize);
+  }, [orders, currentPage, pageSize, showPagination]);
+
+  const startItem = orders.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const endItem = showPagination
+    ? Math.min(currentPage * pageSize, orders.length)
+    : Math.min(pageSize, orders.length);
 
   const resultsLabel =
     orders.length === 0
       ? "No service orders found"
-      : `Showing ${startItem} to ${endItem} of ${orders.length} orders`;
+      : showPagination
+        ? `Showing ${startItem} to ${endItem} of ${orders.length} orders`
+        : `Showing latest ${endItem} of ${orders.length} orders`;
 
   function goToPreviousPage() {
     setCurrentPage((page) => Math.max(1, page - 1));
@@ -433,7 +443,7 @@ function OrdersTable({
             {resultsLabel}
           </p>
 
-          {orders.length > 0 && (
+          {showPagination && orders.length > 0 && totalPages > 1 && (
             <div className="flex items-center gap-2">
               <button
                 type="button"

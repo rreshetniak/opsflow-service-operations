@@ -1,9 +1,12 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 
 import Sidebar from "./components/layout/Sidebar";
 import Topbar from "./components/layout/Topbar";
 import CreateOrderModal from "./components/orders/CreateOrderModal";
+import OrderDetailsDrawer from "./components/orders/OrderDetailsDrawer";
+import ActivityDrawer from "./components/dashboard/ActivityDrawer";
 
 import DashboardPage from "./pages/DashboardPage";
 import OrdersPage from "./pages/OrdersPage";
@@ -12,24 +15,22 @@ import CustomersPage from "./pages/CustomersPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 
-import PageHeader from "./components/ui/PageHeader";
-
 import { initialOrders } from "./data/mockData";
 import { cn } from "./utils/styles";
 
-import { Navigate, Route, Routes } from "react-router";
-
-import OrderDetailsDrawer from "./components/orders/OrderDetailsDrawer";
-import ActivityDrawer from "./components/dashboard/ActivityDrawer";
-
 const ORDERS_STORAGE_KEY = "opsflow-orders";
+const THEME_STORAGE_KEY = "opsflow-theme";
 
-export default function OpsFlowApp() {
+function OpsFlowApp() {
+  const location = useLocation();
+
   const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem("opsflow-theme");
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     return savedTheme === "dark";
   });
+
   const [search, setSearch] = useState("");
+
   const [orders, setOrders] = useState(() => {
     const savedOrders = localStorage.getItem(ORDERS_STORAGE_KEY);
 
@@ -43,13 +44,14 @@ export default function OpsFlowApp() {
       return initialOrders;
     }
   });
+
   const [createOpen, setCreateOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [activityDrawerOpen, setActivityDrawerOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("opsflow-theme", darkMode ? "dark" : "light");
+    localStorage.setItem(THEME_STORAGE_KEY, darkMode ? "dark" : "light");
   }, [darkMode]);
 
   useEffect(() => {
@@ -58,7 +60,11 @@ export default function OpsFlowApp() {
 
   const filteredOrders = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return orders;
+
+    if (!query) {
+      return orders;
+    }
+
     return orders.filter((order) =>
       [
         order.id,
@@ -110,6 +116,17 @@ export default function OpsFlowApp() {
     }
   }
 
+  function handleResetDemoData() {
+    setOrders(initialOrders);
+    setSearch("");
+    setCreateOpen(false);
+    setSidebarOpen(false);
+    setSelectedOrderId(null);
+    setActivityDrawerOpen(false);
+
+    localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(initialOrders));
+  }
+
   function handleOpenActivityDrawer() {
     setActivityDrawerOpen(true);
   }
@@ -142,6 +159,7 @@ export default function OpsFlowApp() {
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
+
         <div className="min-w-0 flex-1">
           <Topbar
             darkMode={darkMode}
@@ -150,42 +168,51 @@ export default function OpsFlowApp() {
             setSearch={setSearch}
             setSidebarOpen={setSidebarOpen}
           />
+
           <main className="p-4 lg:p-7">
             <AnimatePresence mode="wait">
               <motion.div
-                key={darkMode ? "dark" : "light"}
+                key={location.pathname}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.22 }}
               >
-                <Routes>
+                <Routes location={location}>
                   <Route path="/" element={<DashboardPage {...pageProps} />} />
+
                   <Route
                     path="/orders"
                     element={<OrdersPage {...pageProps} />}
                   />
+
                   <Route
                     path="/inventory"
                     element={<InventoryPage darkMode={darkMode} />}
                   />
+
                   <Route
                     path="/customers"
                     element={<CustomersPage darkMode={darkMode} />}
                   />
+
                   <Route
                     path="/reports"
                     element={<ReportsPage darkMode={darkMode} />}
                   />
+
                   <Route
                     path="/settings"
                     element={
                       <SettingsPage
                         darkMode={darkMode}
                         setDarkMode={setDarkMode}
+                        onResetDemoData={handleResetDemoData}
+                        ordersCount={orders.length}
                       />
                     }
                   />
+
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </motion.div>
@@ -193,6 +220,7 @@ export default function OpsFlowApp() {
           </main>
         </div>
       </div>
+
       <CreateOrderModal
         open={createOpen}
         onClose={() => setCreateOpen(false)}
@@ -216,3 +244,5 @@ export default function OpsFlowApp() {
     </div>
   );
 }
+
+export default OpsFlowApp;

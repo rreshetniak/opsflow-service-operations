@@ -128,11 +128,12 @@ function DashboardPage({
 
       <div className="mt-6 grid gap-6 min-[1800px]:grid-cols-[1fr_380px]">
         <OrdersTable
-          orders={orders.slice(0, 5)}
+          orders={orders}
           darkMode={darkMode}
           onUpdateStatus={onUpdateStatus}
           onViewOrder={onViewOrder}
           onDeleteOrder={onDeleteOrder}
+           pageSize={5}
         />
 
         <div className="grid gap-6 xl:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-6">

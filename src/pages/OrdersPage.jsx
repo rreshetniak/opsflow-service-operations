@@ -1,5 +1,14 @@
 import { useMemo, useState } from "react";
-import { Download, Plus, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { Link } from "react-router";
+import {
+  ClipboardList,
+  Download,
+  Plus,
+  RotateCcw,
+  SearchX,
+  Settings,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import OrdersTable from "../components/orders/OrdersTable";
 import PageHeader from "../components/ui/PageHeader";
@@ -53,6 +62,96 @@ function buildOrdersCsv(orders) {
     .join("\n");
 }
 
+function EmptyOrdersState({
+  darkMode,
+  hasActiveFilters,
+  hasOrders,
+  onResetFilters,
+  onCreateOrder,
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-3xl p-8 text-center shadow-sm ring-1",
+        darkMode ? "bg-white/[0.055] ring-white/10" : "bg-white ring-slate-200"
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex h-14 w-14 items-center justify-center rounded-2xl",
+          darkMode
+            ? "bg-indigo-500/15 text-indigo-200"
+            : "bg-indigo-50 text-indigo-700"
+        )}
+      >
+        {hasOrders ? <SearchX size={24} /> : <ClipboardList size={24} />}
+      </div>
+
+      <h2
+        className={cn(
+          "mt-5 text-2xl font-bold tracking-tight",
+          darkMode ? "text-white" : "text-slate-950"
+        )}
+      >
+        {hasOrders ? "No service orders found" : "No service orders yet"}
+      </h2>
+
+      <p
+        className={cn(
+          "mx-auto mt-2 max-w-2xl text-sm leading-6",
+          darkMode ? "text-slate-400" : "text-slate-500"
+        )}
+      >
+        {hasOrders
+          ? "Try adjusting the current filters or check the global search field in the topbar."
+          : "Create a new service order or restore the original demo dataset from Settings."}
+      </p>
+
+      <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={onResetFilters}
+            className={cn(
+              "inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold ring-1 transition",
+              darkMode
+                ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
+                : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+            )}
+          >
+            <RotateCcw size={17} />
+            Reset filters
+          </button>
+        )}
+
+        <button
+          type="button"
+          onClick={onCreateOrder}
+          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-indigo-500"
+        >
+          <Plus size={17} />
+          Create order
+        </button>
+
+        {!hasOrders && (
+          <Link
+            to="/settings"
+            className={cn(
+              "inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold ring-1 transition",
+              darkMode
+                ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
+                : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+            )}
+          >
+            <Settings size={17} />
+            Open settings
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function OrdersPage({
   darkMode,
   orders,
@@ -77,6 +176,8 @@ function OrdersPage({
   }, [orders, statusFilter, priorityFilter]);
 
   const hasActiveFilters = statusFilter !== "All" || priorityFilter !== "All";
+  const hasVisibleOrders = filteredOrders.length > 0;
+  const hasOrders = orders.length > 0;
 
   function resetFilters() {
     setStatusFilter("All");
@@ -109,19 +210,21 @@ function OrdersPage({
         actions={
           <div className="flex flex-wrap gap-2">
             <button
+              type="button"
               onClick={handleExportCsv}
               disabled={filteredOrders.length === 0}
               className={cn(
                 "inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold ring-1 transition disabled:cursor-not-allowed disabled:opacity-50",
                 darkMode
                   ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
+                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
               )}
             >
               <Download size={17} /> Export CSV
             </button>
 
             <button
+              type="button"
               onClick={() => setCreateOpen(true)}
               className="inline-flex items-center gap-2 rounded-2xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-500"
             >
@@ -134,9 +237,7 @@ function OrdersPage({
       <div
         className={cn(
           "mb-6 rounded-3xl p-5 shadow-sm ring-1",
-          darkMode
-            ? "bg-white/[0.055] ring-white/10"
-            : "bg-white ring-slate-200",
+          darkMode ? "bg-white/[0.055] ring-white/10" : "bg-white ring-slate-200"
         )}
       >
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -146,10 +247,11 @@ function OrdersPage({
                 size={18}
                 className={darkMode ? "text-indigo-300" : "text-indigo-600"}
               />
+
               <h2
                 className={cn(
                   "font-bold",
-                  darkMode ? "text-white" : "text-slate-950",
+                  darkMode ? "text-white" : "text-slate-950"
                 )}
               >
                 Order filters
@@ -159,10 +261,11 @@ function OrdersPage({
             <p
               className={cn(
                 "mt-1 text-sm",
-                darkMode ? "text-slate-400" : "text-slate-500",
+                darkMode ? "text-slate-400" : "text-slate-500"
               )}
             >
-              Showing {filteredOrders.length} of {orders.length} service orders.
+              Showing {filteredOrders.length} of {orders.length} service
+              orders.
             </p>
           </div>
 
@@ -171,7 +274,7 @@ function OrdersPage({
               <span
                 className={cn(
                   "text-xs font-bold uppercase tracking-wide",
-                  darkMode ? "text-slate-500" : "text-slate-400",
+                  darkMode ? "text-slate-500" : "text-slate-400"
                 )}
               >
                 Status
@@ -184,7 +287,7 @@ function OrdersPage({
                   "mt-2 h-11 w-full rounded-2xl px-3 text-sm font-semibold outline-none ring-1 transition",
                   darkMode
                     ? "bg-[#111827] text-white ring-white/10 focus:ring-indigo-400/50"
-                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30",
+                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30"
                 )}
               >
                 {STATUS_FILTERS.map((status) => (
@@ -197,7 +300,7 @@ function OrdersPage({
               <span
                 className={cn(
                   "text-xs font-bold uppercase tracking-wide",
-                  darkMode ? "text-slate-500" : "text-slate-400",
+                  darkMode ? "text-slate-500" : "text-slate-400"
                 )}
               >
                 Priority
@@ -210,7 +313,7 @@ function OrdersPage({
                   "mt-2 h-11 w-full rounded-2xl px-3 text-sm font-semibold outline-none ring-1 transition",
                   darkMode
                     ? "bg-[#111827] text-white ring-white/10 focus:ring-indigo-400/50"
-                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30",
+                    : "bg-slate-50 text-slate-950 ring-slate-200 focus:ring-indigo-500/30"
                 )}
               >
                 {PRIORITY_FILTERS.map((priority) => (
@@ -220,13 +323,14 @@ function OrdersPage({
             </label>
 
             <button
+              type="button"
               onClick={resetFilters}
               disabled={!hasActiveFilters}
               className={cn(
                 "mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold ring-1 transition disabled:cursor-not-allowed disabled:opacity-50 sm:mt-6",
                 darkMode
                   ? "bg-white/5 text-slate-200 ring-white/10 hover:bg-white/10"
-                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50",
+                  : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
               )}
             >
               <RotateCcw size={16} /> Reset
@@ -235,15 +339,25 @@ function OrdersPage({
         </div>
       </div>
 
-      <OrdersTable
-        orders={filteredOrders}
-        darkMode={darkMode}
-        compact
-        onUpdateStatus={onUpdateStatus}
-        onViewOrder={onViewOrder}
-        showViewAll={false}
-        onDeleteOrder={onDeleteOrder}
-      />
+      {hasVisibleOrders ? (
+        <OrdersTable
+          orders={filteredOrders}
+          darkMode={darkMode}
+          compact
+          onUpdateStatus={onUpdateStatus}
+          onViewOrder={onViewOrder}
+          onDeleteOrder={onDeleteOrder}
+          showViewAll={false}
+        />
+      ) : (
+        <EmptyOrdersState
+          darkMode={darkMode}
+          hasOrders={hasOrders}
+          hasActiveFilters={hasActiveFilters}
+          onResetFilters={resetFilters}
+          onCreateOrder={() => setCreateOpen(true)}
+        />
+      )}
     </div>
   );
 }
